@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Maleware</string>
     <string name="progress">Личный прогресс</string>
     <string name="history">Моя история</string>
     <string name="testing">Тестирование</string>

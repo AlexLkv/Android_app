@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TestingActivity">
+    tools:context=".TestingActivity"
+    tools:ignore="ExtraText">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/line_right_gl"
@@ -18,6 +19,13 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_gl"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.1" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -40,6 +48,30 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.9" />
+
+    <TextView
+        android:id="@+id/right_ans"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="Верных ответов:"
+        android:textAlignment="center"
+        android:textColor="#faa100"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/top_gl" />
+
+    <TextView
+        android:id="@+id/index"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="Номер вопроса:"
+        android:textAlignment="center"
+        android:textColor="#ffc439 "
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/top_gl"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/question"
