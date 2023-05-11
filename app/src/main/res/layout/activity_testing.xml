@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6" />
+        app:layout_constraintGuide_percent="0.45" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottom_gl"
@@ -59,6 +59,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:checkedButton="@+id/radio_button_1"
+        app:layout_constraintBottom_toBottomOf="@id/bottom_gl"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@id/line_left_gl"
         app:layout_constraintRight_toRightOf="@id/line_right_gl"
         app:layout_constraintTop_toTopOf="@id/top2_gl">
@@ -67,24 +69,28 @@
             android:id="@+id/btn_ans_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="Ответ 1" />
 
         <RadioButton
             android:id="@+id/btn_ans_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="Ответ 2" />
 
         <RadioButton
             android:id="@+id/btn_ans_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="Ответ 3" />
 
         <RadioButton
             android:id="@+id/btn_ans_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="Ответ 4" />
     </RadioGroup>
 
