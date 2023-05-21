@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/rounding"
     tools:context=".TestingActivity"
     tools:ignore="ExtraText">
 
@@ -49,14 +50,24 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.9" />
 
+    <ProgressBar
+        android:id="@+id/pb_horizontal"
+        style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:max="22"
+        app:layout_constraintBottom_toBottomOf="@id/top_gl" />
+
     <TextView
         android:id="@+id/right_ans"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="20dp"
-        android:text="Верных ответов:"
+        android:text="Верных ответов: 0"
         android:textAlignment="center"
-        android:textColor="#faa100"
+        android:textColor="#90a955"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@id/top_gl" />
@@ -66,12 +77,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="20dp"
-        android:text="Номер вопроса:"
+        android:text="Количество ошибок: 0"
         android:textAlignment="center"
-        android:textColor="#ffc439 "
+        android:textColor="#d00000"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/top_gl"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/top_gl" />
 
     <TextView
         android:id="@+id/question"
@@ -80,8 +91,8 @@
         android:layout_margin="10dp"
         android:text="Вопрос"
         android:textAlignment="center"
-        android:textColor="#5c6bc0"
-        android:textSize="24sp"
+        android:textColor="#ffffff"
+        android:textSize="25sp"
         app:layout_constraintLeft_toLeftOf="@id/line_left_gl"
         app:layout_constraintRight_toRightOf="@id/line_right_gl"
         app:layout_constraintTop_toBottomOf="@id/top1_gl" />
@@ -101,32 +112,68 @@
             android:id="@+id/btn_ans_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Ответ 1" />
+            android:layout_margin="5dp"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:checked="false"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:text="Ответ 1"
+            android:textColor="@color/radio_flat_text_selector" />
 
         <RadioButton
+            android:textSize="16sp"
             android:id="@+id/btn_ans_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Ответ 2" />
+            android:layout_margin="5dp"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:checked="false"
+            android:padding="10dp"
+            android:text="Ответ 2"
+            android:textColor="@color/radio_flat_text_selector" />
 
         <RadioButton
+            android:textSize="16sp"
             android:id="@+id/btn_ans_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Ответ 3" />
+            android:layout_margin="5dp"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:checked="false"
+            android:padding="10dp"
+            android:text="Ответ 3"
+            android:textColor="@color/radio_flat_text_selector" />
 
         <RadioButton
+            android:textSize="16sp"
             android:id="@+id/btn_ans_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Ответ 4" />
+            android:layout_margin="5dp"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:checked="false"
+            android:padding="10dp"
+            android:text="Ответ 4"
+            android:textColor="@color/radio_flat_text_selector" />
     </RadioGroup>
 
     <Button
+        android:textColor="@color/white"
+        android:id="@+id/btn_ext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:backgroundTint="#6a040f"
+        android:onClick="ext"
+        android:text="Покинуть тестирование"
+        app:layout_constraintBottom_toTopOf="@id/radioGroup" />
+
+    <Button
+        android:textColor="@color/white"
         android:id="@+id/btn_next"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -135,45 +182,30 @@
         app:layout_constraintRight_toRightOf="@id/line_right_gl"
         app:layout_constraintTop_toBottomOf="@id/bottom_gl" />
 
-    <!--    <Button-->
-    <!--        android:id="@+id/ans_1"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Ответ"-->
-    <!--        app:layout_constraintLeft_toLeftOf="@id/line_left_gl"-->
-    <!--        app:layout_constraintRight_toRightOf="@id/line_right_gl"-->
-    <!--        app:layout_constraintTop_toTopOf="@id/top1_gl" />-->
-    <!--    <Button-->
-    <!--        android:id="@+id/ans_2"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Ответ"-->
-    <!--        app:layout_constraintLeft_toLeftOf="@id/line_left_gl"-->
-    <!--        app:layout_constraintRight_toRightOf="@id/line_right_gl"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/ans_1" />-->
-    <!--    <Button-->
-    <!--        android:id="@+id/ans_3"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Ответ"-->
-    <!--        app:layout_constraintLeft_toLeftOf="@id/line_left_gl"-->
-    <!--        app:layout_constraintRight_toRightOf="@id/line_right_gl"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/ans_2" />-->
-    <!--    <Button-->
-    <!--        android:id="@+id/ans_4"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Ответ"-->
-    <!--        app:layout_constraintLeft_toLeftOf="@id/line_left_gl"-->
-    <!--        app:layout_constraintRight_toRightOf="@id/line_right_gl"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/ans_3" />-->
-    <!--    <Button-->
-    <!--        android:id="@+id/btn_next"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Далее"-->
-    <!--        app:layout_constraintRight_toRightOf="@id/line_right_gl"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/bottom_gl" />-->
+    <Button
+        android:textColor="@color/white"
+        android:id="@+id/btn_idk_ans"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#9e2a2b"
+        android:onClick="idk"
+        android:text="Не знаю"
+        app:layout_constraintLeft_toRightOf="@id/line_left_gl"
+        app:layout_constraintTop_toBottomOf="@id/bottom_gl" />
 
+    <Button
+        android:textColor="@color/white"
+        android:id="@+id/btn_skip_ans"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:backgroundTint="#9e2a2b"
+        android:onClick="skip"
+        android:text="Отложить"
+        app:layout_constraintLeft_toRightOf="@id/btn_idk_ans"
+        app:layout_constraintRight_toLeftOf="@id/btn_next"
+        app:layout_constraintTop_toBottomOf="@id/bottom_gl" />
     />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

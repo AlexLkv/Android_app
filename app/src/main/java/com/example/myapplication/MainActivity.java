@@ -43,4 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private void showMessage(String textInMessage) {
         Toast.makeText(getApplicationContext(), textInMessage, Toast.LENGTH_LONG).show();
     }
+
+    public void history(View view) {
+        Intent intent = new Intent(MainActivity.this, ShowHistoryMenu.class);
+        startActivity(intent);
+    }
 }

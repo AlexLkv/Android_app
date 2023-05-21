@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ResultTesting">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top2_gl"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top1_gl"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top3_gl"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="250dip"
+        app:layout_constraintBottom_toBottomOf="@id/top2_gl"
+        app:layout_constraintTop_toTopOf="@id/top1_gl" />
+
+    <TextView
+        android:id="@+id/result_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:textSize="15dp"
+
+        app:layout_constraintBottom_toBottomOf="@id/top3_gl"
+        app:layout_constraintTop_toBottomOf="@id/graph" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Назад"
+        app:layout_constraintTop_toTopOf="@id/top3_gl"
+        android:layout_margin="20dp"
+        android:onClick="ext"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
