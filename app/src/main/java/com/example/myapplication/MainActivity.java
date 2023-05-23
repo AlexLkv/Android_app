@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Вы готовы начать тестирование?");
 //        builder.setMessage("Для начала тестирования нажмите кнопку \"Да\"");
-        builder.setNegativeButton("Отмена",
+        builder.setNegativeButton("Нет",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,
                                         int which) {
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog,
                                         int which) {
                         Intent intent = new Intent(MainActivity.this, TestingActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(intent);
                     }
                 });
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void history(View view) {
         Intent intent = new Intent(MainActivity.this, ShowHistoryMenu.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 }

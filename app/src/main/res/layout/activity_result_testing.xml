@@ -19,12 +19,13 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.1" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top3_gl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_percent="0.9" />
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph"
@@ -33,21 +34,33 @@
         app:layout_constraintBottom_toBottomOf="@id/top2_gl"
         app:layout_constraintTop_toTopOf="@id/top1_gl" />
 
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:gravity="center"
+        android:textColor="#00FF00"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/top3_gl"
+        app:layout_constraintTop_toTopOf="@id/top2_gl"
+        tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/result_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@id/top1_gl"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        app:layout_constraintBottom_toBottomOf="@id/top3_gl"
-        app:layout_constraintTop_toBottomOf="@id/graph" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Назад"
-        app:layout_constraintTop_toTopOf="@id/top3_gl"
         android:layout_margin="20dp"
+        android:backgroundTint="#90a955"
         android:onClick="ext"
-        />
+        android:text="Назад"
+        app:layout_constraintTop_toTopOf="@id/top3_gl" />
 </androidx.constraintlayout.widget.ConstraintLayout>

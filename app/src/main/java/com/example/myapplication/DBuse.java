@@ -25,6 +25,8 @@ public class DBuse extends SQLiteOpenHelper {
 
     public static final String COLUMN_ID2 = "_id";
     public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_COUNT_RIGHT = "count_right";
+    public static final String COLUMN_COUNT_WRONG = "count_wrong";
 
     public DBuse(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,12 +40,14 @@ public class DBuse extends SQLiteOpenHelper {
                     + COLUMN_QUESTION + " TEXT,"
                     + COLUMN_RIGHT_ANS + " TEXT,"
                     + COLUMN_USER_ANS + " TEXT"
-                    + ");";
+            +");";
 
     private static final String CREATE_TABLE_QUERY2 =
             "CREATE TABLE " + TABLE_SESSION + "("
                     + COLUMN_ID2 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUMN_DATE + " TEXT"
+                    + COLUMN_DATE + " TEXT,"
+                    +COLUMN_COUNT_RIGHT +" TEXT,"
+                    +COLUMN_COUNT_WRONG +" TEXT"
                     + ");";
 
     @Override

@@ -31,7 +31,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7" />
+        app:layout_constraintGuide_percent="0.9" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/line_left_gl"
@@ -49,14 +49,25 @@
 
     <ListView
         android:id="@+id/list_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:gravity="center"
         android:textColor="#00FF00"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:layout_margin="20dp"
         app:layout_constraintBottom_toBottomOf="@id/line_bottom_gl"
-        app:layout_constraintLeft_toLeftOf="@id/line_left_gl"
-        app:layout_constraintRight_toRightOf="@id/line_right_gl"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/line_up_gl" />
+    <Button
+        android:id="@+id/btn_testing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#90a955"
+        android:onClick="back"
+        android:text="Назад"
+        app:layout_constraintLeft_toLeftOf="@id/line_left_gl"
+        app:layout_constraintTop_toTopOf="@id/line_bottom_gl" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

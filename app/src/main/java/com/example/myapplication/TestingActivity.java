@@ -1,14 +1,20 @@
 package com.example.myapplication;
 
+import static com.example.myapplication.DBuse.COLUMN_COUNT_RIGHT;
+import static com.example.myapplication.DBuse.COLUMN_COUNT_WRONG;
 import static com.example.myapplication.DBuse.COLUMN_DATE;
+import static com.example.myapplication.DBuse.COLUMN_ID2;
 import static com.example.myapplication.DBuse.COLUMN_ID_SESSION;
 import static com.example.myapplication.DBuse.COLUMN_QUESTION;
 import static com.example.myapplication.DBuse.COLUMN_RIGHT_ANS;
 import static com.example.myapplication.DBuse.COLUMN_STATE;
 import static com.example.myapplication.DBuse.COLUMN_USER_ANS;
+import static com.example.myapplication.DBuse.TABLE_SESSION;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -59,6 +65,7 @@ public class TestingActivity extends AppCompatActivity {
     String formattedDate;
     private final List<Button> answerButtons = new ArrayList<>();
     DBuse dbHelper = new DBuse(this);
+    String id = null;
 
 
     /////РАБОТА С БД, ЗАПИСЬ ОТВЕТОВ ПОЛЬЗОВАТЕЛЯ
@@ -68,8 +75,7 @@ public class TestingActivity extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         Cursor cursor = db.rawQuery("SELECT _id FROM Session ORDER BY _id DESC LIMIT 1", null);
-        String id = null;
-        if (cursor.moveToFirst()) {
+               if (cursor.moveToFirst()) {
             id = cursor.getString(cursor.getColumnIndex("_id"));
         }
         values.put(COLUMN_STATE, count_right_ans - count_wrong_ans);
@@ -86,7 +92,7 @@ public class TestingActivity extends AppCompatActivity {
     protected void getPrettyDate() {
         Calendar calendar = Calendar.getInstance();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("Время - HH:mm // Дата - dd MMMM yyyy'г.'");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("Время - HH:mm:ss | Дата - dd MMMM yyyy'г.'");
         dateFormat.setDateFormatSymbols(new DateFormatSymbols() {{
             setMonths(new String[]{
                     "января", "февраля", "марта", "апреля",
@@ -99,21 +105,29 @@ public class TestingActivity extends AppCompatActivity {
     protected void createDBsession() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-
         getPrettyDate();
         values.put(COLUMN_DATE, formattedDate);
         db.insert("Session", null, values);
         db.close();
     }
-
+    protected void upd_db(){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_COUNT_RIGHT, count_right_ans);
+        values.put(COLUMN_COUNT_WRONG, count_wrong_ans);
+        String whereClause = COLUMN_ID2 + " = ?";
+        String[] whereArgs = {id};
+        db.update(TABLE_SESSION, values, whereClause, whereArgs);
+        db.close();
+    }
     /////СРАБАТЫВАЕТ ПРИ НАЧАЛЕ АКТИВНОСТИ
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_testing);
-        loadQuestion();
         createDBsession();
+        loadQuestion();
     }
 
 
@@ -215,10 +229,9 @@ public class TestingActivity extends AppCompatActivity {
 
     /////ДЕЙСТВИЯ ПРИ КОНЦЕ ТЕСТИРОВАНИЯ
     public void endTesting() {
+        upd_db();
         Intent intent = new Intent(TestingActivity.this, ResultTesting.class);
-        intent.putExtra("index", index);
-        intent.putExtra("count_right_ans", count_right_ans);
-        intent.putExtra("count_wrong_ans", count_wrong_ans);
+        intent.putExtra("id", id);
         startActivity(intent);
     }
 
@@ -251,19 +264,51 @@ public class TestingActivity extends AppCompatActivity {
     /////КНОПКА НЕ ЗНАЮ
     public void idk(View view) {
         cheked = true;
+        User_ans = null;
         next_question();
     }
 
 
-    /////КНОПКА ПРОПУСКА
-    public void skip(View view) {
-        cheked = true;
-        next_question();
-    }
+//    /////КНОПКА ПРОПУСКА
+//    public void skip(View view) {
+//        cheked = true;
+//        User_ans = null;
+//        next_question();
+//    }
+    ////УДАЛЕНИЕ СЕССИИ
 
     /////КНОПКА ВЫХОДА
     public void ext(View view) {
-        Intent intent = new Intent(TestingActivity.this, MainActivity.class);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(TestingActivity.this);
+        builder.setTitle("Вы точно хотите покинуть тестирование?");
+        builder.setMessage("В случае отмены тестирования прогресс будет утерян");
+        builder.setNegativeButton("Нет",
+                (dialog, which) -> showMessage("Продолжение..."));
+        builder.setPositiveButton("Да",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+                        String whereClause = "_id=?";
+                        String[] whereArgs = {id};
+                        db.execSQL("DELETE FROM `Session` WHERE `_id` = " + id + ";");
+                        db.execSQL("DELETE FROM `Results` WHERE `id_session` = " + id + ";");
+//                        db.delete("Session", whereClause, whereArgs);
+//                        whereClause = "id_session=?";
+//                        db.delete("Results", whereClause, whereArgs);
+                        Intent intent = new Intent(TestingActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivity(intent);
+                    }
+                });
+        builder.show();
+
+    }
+    private void showMessage(String textInMessage) {
+        Toast.makeText(getApplicationContext(), textInMessage, Toast.LENGTH_LONG).show();
+    }
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Чтобы покинуть тестирование, используйте кнопку", Toast.LENGTH_SHORT).show();
     }
 }

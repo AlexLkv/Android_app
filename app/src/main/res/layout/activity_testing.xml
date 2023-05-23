@@ -193,19 +193,6 @@
         app:layout_constraintLeft_toRightOf="@id/line_left_gl"
         app:layout_constraintTop_toBottomOf="@id/bottom_gl" />
 
-    <Button
-        android:textColor="@color/white"
-        android:id="@+id/btn_skip_ans"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:backgroundTint="#9e2a2b"
-        android:onClick="skip"
-        android:text="Отложить"
-        app:layout_constraintLeft_toRightOf="@id/btn_idk_ans"
-        app:layout_constraintRight_toLeftOf="@id/btn_next"
-        app:layout_constraintTop_toBottomOf="@id/bottom_gl" />
-    />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
