@@ -21,6 +21,7 @@ public class ShowHistoryMenu extends AppCompatActivity {
     private final List<String> dates = new ArrayList<>();
     ListView listView;
     String ClickItem;
+    DBuse dbHelper = new DBuse(this);
     String id;
     protected void InitUI(){
         listView = findViewById(R.id.list_view);
