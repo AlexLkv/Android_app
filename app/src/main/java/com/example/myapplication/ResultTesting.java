@@ -2,8 +2,6 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -22,58 +20,36 @@ import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import kotlin.Triple;
 
 public class ResultTesting extends AppCompatActivity {
-    PointsGraphSeries<DataPoint> series2 = new PointsGraphSeries<DataPoint>(new DataPoint[]{});
     LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[]{});
-    private final List<String> result_questions = new ArrayList<>();
-    //    private final List<String> right_ans = new ArrayList<>();
-//    private final List<String> user_ans = new ArrayList<>();
+    PointsGraphSeries<DataPoint> series2 = new PointsGraphSeries<DataPoint>(new DataPoint[]{});
+    List<String> result_questions = new ArrayList<>();
     String id;
+    DBMatches mDBConnector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_testing);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        Bundle arguments = getIntent().getExtras();
+        id = arguments.getString("id");
+        mDBConnector = new DBMatches(this);
         fillTextinfo();
-        getInfoForGraf();
+        getInfoGrafSQL();
         CreateGraf();
         fill_users_ans();
     }
 
-    @SuppressLint("Range")
-    public void getInfoForGraf() {
-        DBuse dbHelper = new DBuse(this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-//        Cursor cursor = db.rawQuery("SELECT _id FROM Session ORDER BY _id DESC LIMIT 1", null);
-//        String id = null;
-//        if (cursor.moveToFirst()) {
-//            id = cursor.getString(cursor.getColumnIndex("_id"));
-//        }
-        Cursor cursor = db.rawQuery("SELECT * FROM Results WHERE id_session = '" + id + "';", null);
-        int i = -1;
-        if (cursor.moveToFirst()) {
-            do {
-                i++;
-                /////ОТРИСОВКА ДЛЯ ГРАФИКА
-                int state = cursor.getInt(1);
-                series.appendData(new DataPoint(i, state), true, 40);
-                series2.appendData(new DataPoint(i, state), true, 40);
-
-                ////// ПОЛУЧЕНИЕ ДАННЫХ ПО ВОПРОСУ
-                String question = cursor.getString(3);
-                String RightAns = cursor.getString(4);
-                String UserAns = cursor.getString(5);
-                if (UserAns == null) UserAns = "Вопрос пропущен";
-                String temp = "Вопрос: " + question + "\n\nВаш ответ: " + UserAns + "\n\nВерный ответ: " + RightAns;
-                if (UserAns.equals(RightAns)) temp = "ВЕРНО!\n" + temp;
-                else temp = "НЕВЕРНО!\n" + temp;
-                result_questions.add(temp);
-
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
+    protected void getInfoGrafSQL() {
+        Triple<LineGraphSeries<DataPoint>, PointsGraphSeries<DataPoint>, List<String>> result = mDBConnector.getInfoForGraf(id);
+        series = result.getFirst();
+        series2 = result.getSecond();
+        result_questions = result.getThird();
     }
 
     public void CreateGraf() {
@@ -117,25 +93,15 @@ public class ResultTesting extends AppCompatActivity {
         };
         listView.setAdapter(arrayAdapter);
     }
+
     @SuppressLint("SetTextI18n")
     public void fillTextinfo() {
         TextView text = findViewById(R.id.result_test);
-
-        Bundle arguments = getIntent().getExtras();
-        id = arguments.getString("id");
-        DBuse dbHelper = new DBuse(this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT count_right, count_wrong FROM Session WHERE _id = '" + id + "'", null);
-        String count_wrong_ans= null;
-        String count_right_ans = null;
-        if (cursor.moveToFirst()) {
-            count_right_ans = cursor.getString(0);
-            count_wrong_ans = cursor.getString(1);
-        }
-        text.setText("Поздравляем, Вы прошли тестирование! \n \n" +
-                "Количество вопросов: " + (Integer.parseInt(count_right_ans) + Integer.parseInt(count_wrong_ans)) +
-                "\n" + "Количество верных ответов: " + count_right_ans +
-                "\n" + "Количество ошибок: " + count_wrong_ans);
+        TextView tv_lvl = findViewById(R.id.result_lvl);
+        String txt = mDBConnector.infoForTesting(id);
+        String lvl = mDBConnector.get_lvl(id);
+        tv_lvl.setText("Ваш уровень: " + lvl);
+        text.setText(txt);
     }
 
     public void ext(View view) {
@@ -143,8 +109,15 @@ public class ResultTesting extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
+
     @Override
     public void onBackPressed() {
         Toast.makeText(this, "Чтобы вернуться назад, используйте кнопку", Toast.LENGTH_SHORT).show();
+    }
+
+    public void history(View view) {
+        Intent intent = new Intent(ResultTesting.this, ShowHistoryMenu.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
     }
 }

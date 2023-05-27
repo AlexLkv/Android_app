@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#353535"
+    android:screenOrientation="landscape"
+    android:background="@drawable/rounding"
+
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -60,12 +63,12 @@
         app:layout_constraintTop_toBottomOf="@id/btn_testing" />
 
     <Button
+        android:onClick="progress"
         android:id="@+id/btn_progress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#9e2a2b"
+        android:backgroundTint="#90a955"
         android:text="@string/progress"
-        android:textColor="@color/white"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="@id/line_left_gl"
         app:layout_constraintRight_toRightOf="@id/line_right_gl"

@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/rounding"
+    android:screenOrientation="landscape"
+    android:orientation="vertical"
     tools:context=".TestingActivity"
     tools:ignore="ExtraText">
 
@@ -57,8 +59,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:max="22"
         app:layout_constraintBottom_toBottomOf="@id/top_gl" />
+    <!--        android:max="22"-->
+
 
     <TextView
         android:id="@+id/right_ans"
@@ -117,12 +120,11 @@
             android:button="@android:color/transparent"
             android:checked="false"
             android:padding="10dp"
-            android:textSize="16sp"
             android:text="Ответ 1"
-            android:textColor="@color/radio_flat_text_selector" />
+            android:textColor="@color/radio_flat_text_selector"
+            android:textSize="16sp" />
 
         <RadioButton
-            android:textSize="16sp"
             android:id="@+id/btn_ans_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,10 +134,10 @@
             android:checked="false"
             android:padding="10dp"
             android:text="Ответ 2"
-            android:textColor="@color/radio_flat_text_selector" />
+            android:textColor="@color/radio_flat_text_selector"
+            android:textSize="16sp" />
 
         <RadioButton
-            android:textSize="16sp"
             android:id="@+id/btn_ans_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -145,10 +147,10 @@
             android:checked="false"
             android:padding="10dp"
             android:text="Ответ 3"
-            android:textColor="@color/radio_flat_text_selector" />
+            android:textColor="@color/radio_flat_text_selector"
+            android:textSize="16sp" />
 
         <RadioButton
-            android:textSize="16sp"
             android:id="@+id/btn_ans_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -158,11 +160,11 @@
             android:checked="false"
             android:padding="10dp"
             android:text="Ответ 4"
-            android:textColor="@color/radio_flat_text_selector" />
+            android:textColor="@color/radio_flat_text_selector"
+            android:textSize="16sp" />
     </RadioGroup>
 
     <Button
-        android:textColor="@color/white"
         android:id="@+id/btn_ext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -170,29 +172,29 @@
         android:backgroundTint="#6a040f"
         android:onClick="ext"
         android:text="Покинуть тестирование"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@id/radioGroup" />
 
     <Button
-        android:textColor="@color/white"
         android:id="@+id/btn_next"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:onClick="next"
         android:text="Далее"
+        android:textColor="@color/white"
         app:layout_constraintRight_toRightOf="@id/line_right_gl"
         app:layout_constraintTop_toBottomOf="@id/bottom_gl" />
 
     <Button
-        android:textColor="@color/white"
         android:id="@+id/btn_idk_ans"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#9e2a2b"
         android:onClick="idk"
         android:text="Не знаю"
+        android:textColor="@color/white"
         app:layout_constraintLeft_toRightOf="@id/line_left_gl"
         app:layout_constraintTop_toBottomOf="@id/bottom_gl" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,11 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
-    android:orientation="vertical"
     android:background="@drawable/rounding"
-
-    tools:context=".ResultTesting">
-
+    android:orientation="vertical"
+    tools:context=".MyResults">
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top2_gl"
         android:layout_width="match_parent"
@@ -25,14 +23,6 @@
         app:layout_constraintGuide_percent="0.1" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_gl"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
-
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top3_gl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -40,70 +30,46 @@
         app:layout_constraintGuide_percent="0.9" />
 
     <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph"
+        android:id="@+id/graph2"
         android:layout_width="match_parent"
         android:layout_height="250dip"
         app:layout_constraintBottom_toBottomOf="@id/top2_gl"
         app:layout_constraintTop_toTopOf="@id/top1_gl" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_vert_gl"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.4" />
-
-    <ListView
-        android:id="@+id/list_view"
-        android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:gravity="center"
-        android:textColor="#00FF00"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/top3_gl"
-        app:layout_constraintTop_toTopOf="@id/top2_gl"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/result_lvl"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:textColor="#90a955"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/top1_gl"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/top_vert_gl"
-        app:layout_constraintTop_toTopOf="@id/top_gl"
-        />
 
     <TextView
         android:id="@+id/result_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:textSize="15dp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@id/top1_gl"
-        app:layout_constraintLeft_toLeftOf="@id/top_vert_gl"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/top_gl"
-    />
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:gravity="center"
-        android:text="Результаты тестирования:"
+        android:text="Личные результаты:"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/top_gl"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="NotSibling" />
+    <TextView
+        android:id="@+id/results"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/top3_gl"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/top2_gl" />
 
     <Button
         android:layout_width="wrap_content"
@@ -115,13 +81,4 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@id/top3_gl" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:backgroundTint="#90a955"
-        android:onClick="history"
-        android:text="История"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/top3_gl" />
 </androidx.constraintlayout.widget.ConstraintLayout>

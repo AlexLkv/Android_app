@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -31,7 +32,6 @@ import okhttp3.Response;
 public class TestingActivity extends AppCompatActivity {
     Root root;
 
-    ResultTesting results;
     Question question;
     Button btnNext;
     boolean right_ans = false;
@@ -41,86 +41,42 @@ public class TestingActivity extends AppCompatActivity {
     public int count_wrong_ans = 0;
     public String Right_ans;
     public String User_ans;
-    private final int mlength = 21;
+    private int mlength;
     private ProgressBar tvProgressHorizontal;
     private TextView textViewQuestion, textIndex, text_right_ans;
     private RadioGroup radioGroup;
-    String formattedDate;
     private final List<Button> answerButtons = new ArrayList<>();
-    DBuse dbHelper = new DBuse(this);
     DBMatches mDBConnector;
-
-    /////РАБОТА С БД, ЗАПИСЬ ОТВЕТОВ ПОЛЬЗОВАТЕЛЯ
-
-//    @SuppressLint("Range")
-//    protected void dbConrol() {
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        Cursor cursor = db.rawQuery("SELECT _id FROM Session ORDER BY _id DESC LIMIT 1", null);
-//        if (cursor.moveToFirst()) {
-//            id = cursor.getString(cursor.getColumnIndex("_id"));
-//        }
-//        values.put(COLUMN_STATE, count_right_ans - count_wrong_ans);
-//        values.put(COLUMN_ID_SESSION, id);
-//        values.put(COLUMN_QUESTION, question.getQuestion());
-//        values.put(COLUMN_RIGHT_ANS, Right_ans);
-//        values.put(COLUMN_USER_ANS, User_ans);
-//
-//        db.insert("Results", null, values);
-//        cursor.close();
-//        db.close();
-//    }
-
-//    protected void getPrettyDate() {
-//        Calendar calendar = Calendar.getInstance();
-//
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("Время - HH:mm:ss | Дата - dd MMMM yyyy'г.'");
-//        dateFormat.setDateFormatSymbols(new DateFormatSymbols() {{
-//            setMonths(new String[]{
-//                    "января", "февраля", "марта", "апреля",
-//                    "мая", "июня", "июля", "августа",
-//                    "сентября", "октября", "ноября", "декабря"});
-//        }});
-//        formattedDate = dateFormat.format(calendar.getTime());
-//    }
-
-//    protected void createDBsession() {
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        getPrettyDate();
-//        values.put(COLUMN_DATE, formattedDate);
-//        db.insert("Session", null, values);
-//        db.close();
-//    }
-
-//    protected void upd_db() {
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        values.put(COLUMN_COUNT_RIGHT, count_right_ans);
-//        values.put(COLUMN_COUNT_WRONG, count_wrong_ans);
-//        String whereClause = COLUMN_ID2 + " = ?";
-//        String[] whereArgs = {id};
-//        db.update(TABLE_SESSION, values, whereClause, whereArgs);
-//        db.close();
-//    }
+    int Index_lvl = 1;
+    String self_lvl = "A1";
 
     /////СРАБАТЫВАЕТ ПРИ НАЧАЛЕ АКТИВНОСТИ
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDBConnector = new DBMatches(this);
         setContentView(R.layout.activity_testing);
+        mDBConnector = new DBMatches(this);
+        initializeUI();
         loadQuestion();
     }
 
 
     /////ПОДГРУЗКА JSON С ВОПРОСАМИ ИЗ ГИТХАБ
     private void loadQuestion() {
-        mDBConnector.createDBsession();
         OkHttpClient client = new OkHttpClient();
-
-        String url = "https://raw.githubusercontent.com/AlexLkv/android_app_tests/main/test.json";
-
+        String url = null;
+        switch (Index_lvl) {
+            case 1:
+                mDBConnector.createDBsession();
+                url = "https://raw.githubusercontent.com/AlexLkv/android_app_tests/main/TestA.json";
+                break;
+            case 2:
+                url = "https://raw.githubusercontent.com/AlexLkv/android_app_tests/main/TestB.json";
+                break;
+            case 3:
+                url = "https://raw.githubusercontent.com/AlexLkv/android_app_tests/main/TestC.json";
+                break;
+        }
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -134,8 +90,9 @@ public class TestingActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 root = gson.fromJson(jsonData, Root.class);
                 question = root.getQuestions().get(index);
-                initializeUI();
                 setListeners();
+                index = 0;
+                right_ans = false;
                 loadUi();
 
             }
@@ -197,6 +154,7 @@ public class TestingActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void loadUi() {
         runOnUiThread(() -> {
+            mlength = root.getQuestions().size();
             question = root.getQuestions().get(index);
             for (int i = 0; i < answerButtons.size(); i++) {
                 answerButtons.get(i).setText(question.getAnswers().get(i));
@@ -204,6 +162,7 @@ public class TestingActivity extends AppCompatActivity {
             textViewQuestion.setText(question.getQuestion());
             tvProgressHorizontal.setProgress(index);
             tvProgressHorizontal.setSecondaryProgress(index + 1);
+            tvProgressHorizontal.setMax(mlength);
             cheked = false;
             right_ans = false;
             radioGroup.clearCheck();
@@ -213,17 +172,48 @@ public class TestingActivity extends AppCompatActivity {
 
     /////ДЕЙСТВИЯ ПРИ КОНЦЕ ТЕСТИРОВАНИЯ
     public void endTesting() {
-        mDBConnector.upd_db(count_right_ans, count_wrong_ans);
+        mDBConnector.upd_db(count_right_ans, count_wrong_ans, self_lvl);
         Intent intent = new Intent(TestingActivity.this, ResultTesting.class);
 
         intent.putExtra("id", mDBConnector.getId());
         startActivity(intent);
     }
 
+
+    public void upd_lvl() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(TestingActivity.this);
+        builder.setTitle("Поздравляем! Вы достигли уровня: " + self_lvl + "!");
+        builder.setPositiveButton("Хорошо",
+                (dialog, which) -> showMessage("Продолжение..."));
+        builder.show();
+    }
+
+    public void upd_lvlOFhard() {
+        if (Index_lvl != 3) {
+            Index_lvl++;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(TestingActivity.this);
+            builder.setTitle("Поздравляем! Вы достигли уровня: " + self_lvl + "!");
+            builder.setMessage("Уровень сложности вопросов будет изменен.");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Хорошо",
+
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,
+                                            int which) {
+                            showMessage("Продолжение...");
+                            loadQuestion();
+                        }
+                    });
+            builder.show();
+
+        }
+    }
+
     /////СЛЕДУЮЩИЙ ВОПРОС
     public void next_question() {
         index++;
-        if (index <= mlength && cheked) {
+        if (index < mlength && cheked) {
             if (right_ans) {
                 count_right_ans++;
                 text_right_ans.setText("Верных ответов: " + count_right_ans);
@@ -231,14 +221,34 @@ public class TestingActivity extends AppCompatActivity {
                 count_wrong_ans++;
                 textIndex.setText("Количество ошибок: " + count_wrong_ans);
             }
+
+            String lvl = question.getLevel();
+            if (count_right_ans == root.getA2() && Objects.equals(lvl, "A1") && !Objects.equals(self_lvl, "A2")) {
+                self_lvl = "A2";
+                upd_lvl();
+            } else if ((count_right_ans == root.getB1()) && Objects.equals(lvl, "A1") && !Objects.equals(self_lvl, "B1")) {
+                self_lvl = "B1";
+                upd_lvlOFhard();
+            } else if (count_right_ans == root.getB2() && Objects.equals(lvl, "B") && !Objects.equals(self_lvl, "B2")) {
+                self_lvl = "B2";
+                upd_lvl();
+            } else if (count_right_ans == root.getC1() && Objects.equals(lvl, "B") && !Objects.equals(self_lvl, "C1")) {
+                self_lvl = "C1";
+                upd_lvlOFhard();
+            } else if (count_right_ans == root.getC2() && Objects.equals(lvl, "C") && !Objects.equals(self_lvl, "C2")) {
+                self_lvl = "C2";
+                endTesting();
+            }
             mDBConnector.dbConrol(count_right_ans, count_wrong_ans, question.getQuestion(), Right_ans, User_ans);
             loadUi();
         } else if (!cheked) {
             Toast.makeText(getApplicationContext(), "Ничего не выбрано", Toast.LENGTH_SHORT).show();
         } else {
+            mDBConnector.dbConrol(count_right_ans, count_wrong_ans, question.getQuestion(), Right_ans, User_ans);
             endTesting();
         }
     }
+
 
     /////КНОПКА ДАЛЕЕ
     @SuppressLint("SetTextI18n")
@@ -253,14 +263,6 @@ public class TestingActivity extends AppCompatActivity {
         next_question();
     }
 
-
-//    /////КНОПКА ПРОПУСКА
-//    public void skip(View view) {
-//        cheked = true;
-//        User_ans = null;
-//        next_question();
-//    }
-    ////УДАЛЕНИЕ СЕССИИ
 
     /////КНОПКА ВЫХОДА
     public void ext(View view) {
