@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:screenOrientation="landscape"
     android:background="@drawable/rounding"
-    android:orientation="vertical"
     tools:context=".MyResults">
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top2_gl"

@@ -34,6 +34,7 @@ public class ShowHistoryMenu extends AppCompatActivity {
         dates = mDBConnector.getDate();
         setData();
         setListeners();
+
     }
 
     private void setListeners() {

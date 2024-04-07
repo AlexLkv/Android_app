@@ -68,13 +68,13 @@ public class TestingActivity extends AppCompatActivity {
         switch (Index_lvl) {
             case 1:
                 mDBConnector.createDBsession();
-                url = "https://raw.githubusercontent.com/AlexLkv/android_app_tests/main/TestA.json";
+                url = "https://gitfront.io/r/Alexlkv/PCToDPrZ4WBS/android-app-tests/raw/TestA.json";
                 break;
             case 2:
-                url = "https://raw.githubusercontent.com/AlexLkv/android_app_tests/main/TestB.json";
+                url = "https://gitfront.io/r/Alexlkv/PCToDPrZ4WBS/android-app-tests/raw/TestB.json";
                 break;
             case 3:
-                url = "https://raw.githubusercontent.com/AlexLkv/android_app_tests/main/TestC.json";
+                url = "https://gitfront.io/r/Alexlkv/PCToDPrZ4WBS/android-app-tests/raw/TestC.json";
                 break;
         }
         Request request = new Request.Builder().url(url).build();
